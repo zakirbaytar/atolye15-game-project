@@ -4,7 +4,7 @@ import { useEventCallback } from './useEventCallback';
 
 interface UseSpeechRecognitionOptions {
   onResult: (transcript: string) => void;
-  onError: (error: Error) => void;
+  onError: (error: any) => void;
 }
 
 const defaultOptions = {
@@ -23,12 +23,10 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
     (options: SpeechRecognitionOptions) => {
       if (listening || !supported) return;
 
-      if (recognition.current) {
-        recognition.current.listen(options);
-        recognition.current.subscribe('result', onResult);
-        recognition.current.subscribe;
-        setListening(true);
-      }
+      recognition.current?.listen(options);
+      recognition.current?.subscribe('result', onResult!);
+      recognition.current?.subscribe('error', onError!);
+      setListening(true);
     },
     [recognition, listening, supported],
   );
@@ -47,7 +45,7 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
         recognition.current = new SpeechRecognizer();
       }
     } catch (error: any) {
-      onError(error);
+      onError?.(error);
     }
 
     return () => {
