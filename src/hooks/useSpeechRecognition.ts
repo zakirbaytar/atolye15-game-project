@@ -31,7 +31,7 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
     [recognition, listening, supported],
   );
 
-  const stop = useEventCallback(() => {
+  const stopListening = useEventCallback(() => {
     if (!listening || !supported) return;
 
     recognition.current?.stop();
@@ -58,7 +58,7 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
     listening,
     supported,
     listen,
-    stop,
+    stopListening,
   };
 };
 
