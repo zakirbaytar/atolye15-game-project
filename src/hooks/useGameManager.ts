@@ -1,5 +1,4 @@
 import { useEffect, useCallback, useReducer } from 'react';
-import names from '../names.json';
 import { ActionTypes } from '../state/action-types';
 import { gameReducer } from '../state/reducers';
 import { GameState, Turn } from '../types/game';
@@ -15,10 +14,11 @@ const initialState = {
 };
 
 interface GamemanagerOptions {
+  words: string[];
   language: 'tr-TR' | 'en-US';
 }
 
-export const useGameManager = ({ language }: GamemanagerOptions) => {
+export const useGameManager = ({ words, language }: GamemanagerOptions) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   const { gameState, turn, wordHistory, winner } = state;
@@ -55,11 +55,12 @@ export const useGameManager = ({ language }: GamemanagerOptions) => {
     await waitUntil(3000);
     if (!startCharacter) return;
 
-    const word = names.find((name) => name[0] === startCharacter);
-    if (!word) return;
+    const filteredWords = words.filter((word: string) => word[0] === startCharacter);
+    const randomIndex = Math.floor(Math.random() * filteredWords.length);
+    const randomName = filteredWords[randomIndex];
 
-    speechSynthesis.speak(word);
-    dispatch({ type: ActionTypes.AddWord, payload: { word } });
+    speechSynthesis.speak(randomName);
+    dispatch({ type: ActionTypes.AddWord, payload: { word: randomName } });
     dispatch({ type: ActionTypes.SetTurn, payload: { turn: Turn.Player } });
   }, [speechSynthesis, getStartCharacter]);
 
