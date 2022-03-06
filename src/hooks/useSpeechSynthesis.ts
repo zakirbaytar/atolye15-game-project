@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 
 interface UseSpeechSynthesisOptions {
-  lang: string;
+  language: string;
   onEnd?: Callback;
 }
 
 const useSpeechSynthesis = (options: UseSpeechSynthesisOptions) => {
-  const { lang, onEnd } = options;
+  const { language, onEnd } = options;
   const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(false);
@@ -15,10 +15,10 @@ const useSpeechSynthesis = (options: UseSpeechSynthesisOptions) => {
     (voices: SpeechSynthesisVoice[]) => {
       if (!voices.length) return;
 
-      const voice = voices.find((voice) => voice.lang === lang);
+      const voice = voices.find((voice) => voice.lang === language);
       if (voice) setVoice(voice);
     },
-    [lang, setVoice],
+    [language, setVoice],
   );
 
   const handleEnd = (text: string) => {
