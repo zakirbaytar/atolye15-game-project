@@ -11,53 +11,53 @@ type SpeechRecognitionEventType =
   | 'speechend'
   | 'start';
 
-interface SpeechGrammar {
+type SpeechRecognitionEventHandlers = `on${SpeechRecognitionEventType}`;
+
+interface ISpeechGrammar {
   src: string;
   weight: number;
 }
-
-type Callback = (...args: any[]) => void;
 
 interface ISpeechGrammarList {
   new (): ISpeechGrammarList;
   readonly length: number;
 
-  public [index: number]: SpeechGrammar;
+  public [index: number]: ISpeechGrammar;
   public addFromString(string: string, weight?: number): void;
   public addFromURI(src: string, weight?: number): void;
 }
 
-interface SpeechRecognitionAlternative {
+interface ISpeechRecognitionAlternative {
   readonly transcript: string;
   readonly confidence: number;
 }
 
-interface SpeechRecognitionResult {
+interface ISpeechRecognitionResult {
   readonly isFinal: boolean;
   readonly length: number;
 
-  [index: number]: SpeechRecognitionAlternative;
+  [index: number]: ISpeechRecognitionAlternative;
 }
 
-interface SpeechRecognitionResultList {
+interface ISpeechRecognitionResultList {
   readonly length: number;
 
-  [index: number]: SpeechRecognitionResult;
+  [index: number]: ISpeechRecognitionResult;
 }
 
-interface SpeechRecognitionEvent {
+interface ISpeechRecognitionEvent {
   readonly emma: Document | null;
   readonly interpretation: any;
   readonly resultIndex: number;
   readonly results: SpeechRecognitionResultList;
 }
 
-type SpeechRecognitionListener = (event: SpeechRecognitionEvent) => void;
+type SpeechRecognitionListener = (event: ISpeechRecognitionEvent) => void;
 
 interface ISpeechRecognition extends EventTarget {
   new (): ISpeechRecognition;
 
-  grammars: SpeechGrammarList;
+  grammars: ISpeechGrammarList;
   lang: string;
   continuous: boolean;
   interimResults: boolean;
@@ -70,17 +70,12 @@ interface ISpeechRecognition extends EventTarget {
   public addEventListener(
     type: SpeechRecognitionEventType,
     listener: EventListenerOrEventListenerObject | SpeechRecognitionListener,
-    options?: boolean | AddEventListenerOptions,
   ): void;
 
   public removeEventListener(
     type: SpeechRecognitionEventType,
     listener: EventListenerOrEventListenerObject | SpeechRecognitionListener,
-    options?: boolean | EventListenerOptions,
   ): void;
-}
 
-declare var webkitSpeechRecognition: SpeechRecognition;
-declare var SpeechRecognition: SpeechRecognizer;
-declare var webkitSpeechGrammarList: ISpeechGrammarList;
-declare var SpeechGrammarList: ISpeechGrammarList;
+  [SpeechRecognitionEventHandlers]: EventListenerOrEventListenerObject | SpeechRecognitionListener;
+}
