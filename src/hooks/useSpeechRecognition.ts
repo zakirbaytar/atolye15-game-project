@@ -12,6 +12,13 @@ const defaultOptions = {
   onError: () => {},
 };
 
+const defaultListenOptions = {
+  lang: 'tr-TR',
+  interimResults: true,
+  maxAlternatives: 1,
+  continuous: false,
+};
+
 const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOptions) => {
   const recognition = useRef<SpeechRecognizer | null>(null);
   const [listening, setListening] = useState(false);
@@ -23,7 +30,9 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
     (options: SpeechRecognitionOptions) => {
       if (listening || !supported) return;
 
-      recognition.current?.listen(options);
+      const mergedOptions = { ...defaultListenOptions, ...options };
+
+      recognition.current?.listen(mergedOptions);
       recognition.current?.subscribe('result', onResult!);
       recognition.current?.subscribe('error', onError!);
       setListening(true);
