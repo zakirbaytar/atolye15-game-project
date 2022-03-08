@@ -1,6 +1,14 @@
 type Callback = (...args: any[]) => void;
 
-declare var webkitSpeechRecognition: ISpeechRecognition;
-declare var SpeechRecognition: ISpeechRecognition;
-declare var webkitSpeechGrammarList: ISpeechGrammarList;
-declare var SpeechGrammarList: ISpeechGrammarList;
+type GlobalWindow = Window &
+  typeof globalThis & {
+    webkitSpeechRecognition?: ISpeechRecognition;
+    SpeechRecognition?: ISpeechRecognition;
+    webkitSpeechGrammarList?: ISpeechGrammarList;
+    SpeechGrammarList?: ISpeechGrammarList;
+  };
+
+declare let webkitSpeechRecognition: ISpeechRecognition;
+declare let SpeechRecognition: ISpeechRecognition;
+declare let webkitSpeechGrammarList: ISpeechGrammarList;
+declare let SpeechGrammarList: ISpeechGrammarList;
