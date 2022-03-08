@@ -1,9 +1,12 @@
 import React, { FunctionComponent, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import cs from 'classnames';
+
 import NavItem from '../../components/NavItem';
 import NavbarBurger from '../../components/NavbarBurger';
 
 const NavBar: FunctionComponent = () => {
+  const { pathname } = useLocation();
   const [isActive, setIsActive] = useState(false);
 
   const closeMenu = () => {
@@ -32,15 +35,17 @@ const NavBar: FunctionComponent = () => {
               Nasıl Oynanır?
             </NavItem>
           </div>
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons is-justify-content-center">
-                <NavItem className="button is-primary is-small" path="/play" onClick={closeMenu}>
-                  <strong>Hemen Oynamaya Başla</strong>
-                </NavItem>
+          {pathname !== '/play' && (
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="buttons is-justify-content-center">
+                  <NavItem className="button is-primary is-small" path="/play" onClick={closeMenu}>
+                    <strong>Hemen Oynamaya Başla</strong>
+                  </NavItem>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </nav>
