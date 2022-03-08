@@ -1,44 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import useCallbackRef from './useCallbackRef';
+import React, { useCallback, useState } from 'react';
 
-enum Permission {
+export enum AudioPermission {
   Unknown = 'Unknown',
   Granted = 'Granted',
   Denied = 'Denied',
 }
 
-interface UseAudioPermissionArguments {
-  onGranted: () => void;
-  onDenied: () => void;
-}
-
-const useAudioPermission = ({
-  onGranted,
-  onDenied,
-}: UseAudioPermissionArguments): [Permission, () => void] => {
-  const [permission, setPermission] = useState(Permission.Unknown);
-
-  const onPermissionGranted = useCallbackRef(onGranted);
-  const onPermissionDenied = useCallbackRef(onDenied);
+const useAudioPermission = (): [AudioPermission, () => void] => {
+  const [permission, setPermission] = useState(AudioPermission.Unknown);
 
   const askForPermission = useCallback(() => {
-    setPermission(Permission.Unknown);
+    setPermission(AudioPermission.Unknown);
 
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: false })
       .then((stream) => {
         stream.getTracks().forEach((track) => track.stop());
-        setPermission(Permission.Granted);
+        setPermission(AudioPermission.Granted);
       })
       .catch((error) => {
-        setPermission(Permission.Denied);
+        setPermission(AudioPermission.Denied);
       });
   }, []);
-
-  useEffect(() => {
-    if (permission === Permission.Granted) onPermissionGranted.current();
-    if (permission === Permission.Denied) onPermissionDenied.current();
-  }, [permission]);
 
   return [permission, askForPermission];
 };
