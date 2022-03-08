@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import cs from 'classnames';
 
 interface Selection {
@@ -25,11 +25,12 @@ const ToggleGroup: FunctionComponent<ToggleGroupProps> = ({
   }, [currentSelection]);
 
   return (
-    <Fragment>
-      {selections.map((selection, index) => {
+    <>
+      {selections.map((selection) => {
         return (
           <button
-            key={index}
+            type="button"
+            key={`button-${(selection.value as string) ?? 'random'}`}
             title={selection.label}
             className={cs('button is-primary', {
               'is-outlined': currentSelection !== selection.value,
@@ -40,7 +41,7 @@ const ToggleGroup: FunctionComponent<ToggleGroupProps> = ({
           </button>
         );
       })}
-    </Fragment>
+    </>
   );
 };
 
