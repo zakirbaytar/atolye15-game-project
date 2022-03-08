@@ -1,23 +1,18 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../components/Modal';
+import AudioPermissionModal from '../../containers/AudioPermissionModal/AudioPermissionModal';
 import useAudioPermission from '../../hooks/useAudioPermission';
 
 import './style.css';
 
 const Home: FunctionComponent = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const navigate = useNavigate();
-
-  const [, askForPermission] = useAudioPermission({
-    onGranted: () => navigate('/play'),
-    onDenied: () => setIsOpen(true),
-  });
+  const { askForPermission } = useAudioPermission();
 
   return (
     <main className="home">
-      <Modal isOpen={isOpen} toggle={() => setIsOpen(!isOpen)} />
+      <AudioPermissionModal />
       <section
         className="hero is-medium"
         style={{ position: 'relative', backgroundColor: '#ebfffc' }}
@@ -33,7 +28,11 @@ const Home: FunctionComponent = () => {
               <button
                 className="button is-primary is-small is-outlined mt-4"
                 type="button"
-                onClick={() => askForPermission()}
+                onClick={() => {
+                  askForPermission(() => {
+                    navigate('/play');
+                  });
+                }}
               >
                 Hemen oynamak için mikrofon iznini aç
               </button>
