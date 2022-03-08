@@ -11,6 +11,16 @@ type SpeechRecognitionEventType =
   | 'speechend'
   | 'start';
 
+type SpeechRecognitionErrorEventType =
+  | 'no-speech'
+  | 'aborted'
+  | 'audio-capture'
+  | 'network'
+  | 'not-allowed'
+  | 'service-not-allowed'
+  | 'bad-grammar'
+  | 'language-not-supported';
+
 type SpeechRecognitionEventHandlers = `on${SpeechRecognitionEventType}`;
 
 interface ISpeechGrammar {
@@ -47,12 +57,20 @@ interface ISpeechRecognitionResultList {
 
 interface ISpeechRecognitionEvent {
   readonly emma: Document | null;
-  readonly interpretation: any;
+  readonly interpretation: unknown;
   readonly resultIndex: number;
   readonly results: SpeechRecognitionResultList;
 }
 
-type SpeechRecognitionListener = (event: ISpeechRecognitionEvent) => void;
+type SpeechRecognitionListener =
+  | EventListenerOrEventListenerObject
+  | ((event: ISpeechRecognitionEvent) => void)
+  | ((event: SpeechRecognitionErrorEvent) => void);
+
+type SpeechRecognitionErrorEvent = Event & {
+  readonly error: SpeechRecognitionErrorEventType;
+  readonly message: string;
+};
 
 interface ISpeechRecognition extends EventTarget {
   new (): ISpeechRecognition;
@@ -69,13 +87,13 @@ interface ISpeechRecognition extends EventTarget {
 
   public addEventListener(
     type: SpeechRecognitionEventType,
-    listener: EventListenerOrEventListenerObject | SpeechRecognitionListener,
+    listener: SpeechRecognitionListener,
   ): void;
 
   public removeEventListener(
     type: SpeechRecognitionEventType,
-    listener: EventListenerOrEventListenerObject | SpeechRecognitionListener,
+    listener: SpeechRecognitionListener,
   ): void;
 
-  [SpeechRecognitionEventHandlers]: EventListenerOrEventListenerObject | SpeechRecognitionListener;
+  [SpeechRecognitionEventHandlers]: SpeechRecognitionListener;
 }

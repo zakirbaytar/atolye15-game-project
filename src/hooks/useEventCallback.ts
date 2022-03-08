@@ -1,19 +1,21 @@
 import { useRef, useEffect, useCallback } from 'react';
 
-export function useEventCallback(fn: Callback, dependencies: any[]) {
+const useEventCallback = (callback: Callback, dependencies: unknown[]): Callback => {
   const ref = useRef<Callback>(() => {
     throw new Error('Cannot call an event handler while rendering.');
   });
 
   useEffect(() => {
-    ref.current = fn;
-  }, [fn, ...dependencies]);
+    ref.current = callback;
+  }, [callback, ...dependencies]);
 
   return useCallback<Callback>(
     (args) => {
-      const fn = ref.current;
-      return fn(args);
+      const callbackFunction = ref.current;
+      return callbackFunction(args);
     },
     [ref],
   );
-}
+};
+
+export default useEventCallback;

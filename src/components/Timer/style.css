@@ -1,0 +1,46 @@
+.timer {
+  --timer-size: 5rem;
+  --timer-font-size: 2rem;
+  --timer-stroke-width: 0.5rem;
+
+  position: relative;
+  width: var(--timer-size);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer__svg {
+  transform: scaleX(-1);
+}
+
+.timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.timer__path-elapsed {
+  stroke-width: var(--timer-stroke-width);
+  stroke: grey;
+}
+
+.timer__path-remaining {
+  stroke-width: var(--timer-stroke-width);
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.timer__label {
+  position: absolute;
+  width: var(--timer-size);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--timer-font-size);
+}

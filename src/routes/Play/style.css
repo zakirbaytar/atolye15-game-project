@@ -1,0 +1,19 @@
+@media screen and (min-width: 1024px) {
+  .play-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 3.25rem);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .play-container > .section {
+    padding: 5rem 1.5rem;
+  }
+
+  .play-container .column > .section {
+    padding: 0;
+  }
+}

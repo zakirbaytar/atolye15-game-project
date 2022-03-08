@@ -1,14 +1,21 @@
-import { Fragment } from 'react';
-import Routes from './routes/Routes';
+import React, { FunctionComponent } from 'react';
+import Routes from './routes';
 
-function App() {
+import PermissionProvider from './context/PermissionProvider';
+import NavBar from './containers/NavBar';
+
+import 'bulma/css/bulma.min.css';
+import './styles/index.css';
+
+const App: FunctionComponent = () => {
   return (
-    <Fragment>
-      <header className="App-header">Header</header>
+    <PermissionProvider>
+      <header className="container">
+        <NavBar />
+      </header>
       <Routes />
-      <footer>Footer</footer>
-    </Fragment>
+    </PermissionProvider>
   );
-}
+};
 
 export default App;
