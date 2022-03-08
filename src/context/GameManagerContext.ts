@@ -1,13 +1,12 @@
 import { createContext } from 'react';
+import { BoundActionCreators } from '../state/action-creators';
 import { GameReducerState } from '../state/reducers/game-reducer';
-import { GameState, Turn } from '../types/game';
+import { GameState } from '../types/game';
 
-export type GameManagerContextState = GameReducerState & {
-  timeLeft: number;
-  setWinner: (turn: Turn) => void;
-  startNewGame: (turn?: Turn) => void;
-  setStartingPlayer: (turn: Turn | null) => void;
-};
+export type GameManagerContextState = GameReducerState &
+  Pick<BoundActionCreators, 'setWinner' | 'startNewGame' | 'setStartingPlayer'> & {
+    timeLeft: number;
+  };
 
 export const GameManagerContext = createContext<GameManagerContextState>({
   startingPlayer: null,

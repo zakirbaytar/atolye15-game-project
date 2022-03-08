@@ -11,8 +11,8 @@ const setTurn = (dispatch: Dispatch<Action>) => (turn: Turn) => {
   dispatch({ type: ActionTypes.SetTurn, payload: { turn } });
 };
 
-const startNewGame = (dispatch: Dispatch<Action>) => (turn?: Turn) => {
-  dispatch({ type: ActionTypes.StartNewGame, payload: { startingPlayer: turn } });
+const startNewGame = (dispatch: Dispatch<Action>) => () => {
+  dispatch({ type: ActionTypes.StartNewGame });
 };
 
 const setWinner = (dispatch: Dispatch<Action>) => (turn: Turn) => {
@@ -23,12 +23,12 @@ const setStartingPlayer = (dispatch: Dispatch<Action>) => (turn: Turn | null) =>
   dispatch({ type: ActionTypes.SetStartingPlayer, payload: { turn } });
 };
 
-interface BoundActionCreators {
-  addWord: (word: string) => void;
-  setTurn: (turn: Turn) => void;
-  startNewGame: (turn?: Turn) => void;
-  setWinner: (turn: Turn) => void;
-  setStartingPlayer: (turn: Turn) => void;
+export interface BoundActionCreators {
+  addWord: ReturnType<typeof addWord>;
+  setTurn: ReturnType<typeof setTurn>;
+  startNewGame: ReturnType<typeof startNewGame>;
+  setWinner: ReturnType<typeof setWinner>;
+  setStartingPlayer: ReturnType<typeof setStartingPlayer>;
 }
 
 const bindActionCreators = (dispatch: Dispatch<Action>): BoundActionCreators => ({
