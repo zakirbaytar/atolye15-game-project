@@ -22,7 +22,7 @@ const NavBar: FunctionComponent = () => {
       <div className="container is-max-widescreen">
         <div className="navbar-brand">
           <NavItem path="/" onClick={closeMenu}>
-            <img src="./logo.png" alt="Türetmeç: Kelime Türetme Oyunu" width="112" height="28" />
+            <img src="./banner.png" alt="Türetmeç: Kelime Türetme Oyunu" width="112" height="28" />
           </NavItem>
           <NavbarBurger isActive={isActive} onClick={toggleMenu} />
         </div>
