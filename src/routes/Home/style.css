@@ -13,7 +13,7 @@
   width: 100%;
   height: 100%;
 
-  background-image: url(http://localhost:3000/ai.svg);
+  background-image: url('/public/ai.svg');
   background-size: 15rem 10rem;
   background-repeat: no-repeat;
   background-position: left center;
