@@ -40,7 +40,7 @@ const PlayerSelectionControls: FunctionComponent = () => {
             ),
           },
         ]}
-        onSelect={(selection) => setStartingPlayer(selection as Turn)}
+        onSelect={(selection) => setStartingPlayer(selection as Turn | null)}
       />
     </div>
   );
