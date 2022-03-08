@@ -1,11 +1,11 @@
-import { ActionTypes } from '../action-types';
-import { Action } from '../actions';
+import ActionTypes from '../action-types';
+import Action from '../actions';
 
-import names from '../../names.json';
 import { GameState, Turn } from '../../types/game';
 
-interface GameReducerState {
+export interface GameReducerState {
   gameState: GameState;
+  lastWord: string | null;
   wordHistory: string[];
   turn: Turn | null;
   winner: Turn | null;
@@ -13,39 +13,25 @@ interface GameReducerState {
 
 const initialState = {
   gameState: GameState.NotStarted,
-  turn: null,
+  lastWord: null,
   wordHistory: [],
+  turn: null,
   winner: null,
 };
 
-function isValidWord(wordHistory: string[], word: string) {
-  if (wordHistory.includes(word)) return false;
-  if (!names.includes(word)) return false;
-
-  const lastWord = wordHistory[wordHistory.length - 1];
-  if (!lastWord) return true;
-
-  return lastWord[lastWord.length - 1] === word[0];
-}
-
-export const gameReducer = (state: GameReducerState = initialState, action: Action) => {
+const gameReducer = (state: GameReducerState = initialState, action: Action): GameReducerState => {
   switch (action.type) {
     case ActionTypes.StartNewGame:
-      return { ...initialState, gameState: GameState.Started, turn: Turn.Player };
+      const turn = action.payload?.startingPlayer;
+      return { ...initialState, gameState: GameState.Started, turn: turn ?? Turn.Player };
     case ActionTypes.SetTurn:
       return { ...state, turn: action.payload.turn };
     case ActionTypes.AddWord:
-      if (!isValidWord(state.wordHistory, action.payload.word)) {
-        return {
-          ...state,
-          gameState: GameState.Finished,
-          winner: state.turn === Turn.Player ? Turn.Computer : Turn.Player,
-        };
-      }
-
       return {
         ...state,
+        lastWord: action.payload.word,
         wordHistory: [...state.wordHistory, action.payload.word],
+        turn: state.turn === Turn.Player ? Turn.Computer : Turn.Player,
       };
     case ActionTypes.SetWinner:
       return {
@@ -57,3 +43,5 @@ export const gameReducer = (state: GameReducerState = initialState, action: Acti
       return state;
   }
 };
+
+export default gameReducer;
