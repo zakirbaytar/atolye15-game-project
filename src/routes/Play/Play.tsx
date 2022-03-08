@@ -16,7 +16,7 @@ import './style.css';
 
 const Play: FunctionComponent = () => {
   const { askForPermission } = useAudioPermission();
-  const { startNewGame, gameState, timeLeft } = useGameManager();
+  const { startNewGame, gameState, turnTime, timeLeft } = useGameManager();
 
   return (
     <main className="container play-container is-max-widescreen">
@@ -29,7 +29,7 @@ const Play: FunctionComponent = () => {
           </div>
           <div className="column is-4-mobile is-flex is-justify-content-center is-align-content-center">
             {gameState === GameState.Started ? (
-              <Timer seconds={8} timeLeft={timeLeft} />
+              <Timer seconds={turnTime} timeLeft={timeLeft} />
             ) : (
               <div className="buttons are-small">
                 <button

@@ -3,12 +3,13 @@ import GameManagerProvider from '../../context/GameManagerProvider';
 import Play from './Play';
 
 import names from '../../names.json';
+import config from '../../config';
 
 const PlayGame: FunctionComponent = () => {
   return (
     <GameManagerProvider
-      timer={8}
-      aiOptions={{ lossPercentage: 20, timeToAnswer: 3 }}
+      turnTime={config.turnTime}
+      aiOptions={{ lossPercentage: config.lossPercentage, timeToAnswer: config.timeToAnswer }}
       language="tr-TR"
       words={names}
     >
