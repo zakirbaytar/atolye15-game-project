@@ -1,4 +1,4 @@
-import { Observable } from './Observable';
+import Observable from './Observable';
 
 export interface SpeechRecognitionOptions {
   lang: string;
@@ -8,28 +8,24 @@ export interface SpeechRecognitionOptions {
   grammars?: string;
 }
 
+const SpeechRecognition =
+  (window as GlobalWindow).webkitSpeechRecognition || (window as GlobalWindow).SpeechRecognition;
+
+const GrammarList =
+  (window as GlobalWindow).webkitSpeechGrammarList || (window as GlobalWindow).SpeechGrammarList;
+
 export class SpeechRecognizer extends Observable<SpeechRecognitionEventType> {
   private recognition: ISpeechRecognition;
-  private listening: boolean = false;
+
+  private listening = false;
 
   constructor() {
     super();
-    if (!SpeechRecognizer.isSupported()) {
+    if (!SpeechRecognition || !GrammarList) {
       throw new Error('Speech recognition is not supported in this environment');
     }
 
-    const SpeechRecognition: ISpeechRecognition =
-      window.webkitSpeechRecognition || window.SpeechRecognition;
-
     this.recognition = new SpeechRecognition();
-  }
-
-  static isSupported() {
-    return (
-      typeof window !== 'undefined' &&
-      !!(window.SpeechRecognition || window.webkitSpeechRecognition) &&
-      !!(window.SpeechGrammarList || window.webkitSpeechGrammarList)
-    );
   }
 
   private handleResult = (event: ISpeechRecognitionEvent) => {
@@ -43,8 +39,8 @@ export class SpeechRecognizer extends Observable<SpeechRecognitionEventType> {
     }
   };
 
-  private handleError = (event: any) => {
-    if (event.error === 'not-allowed') {
+  private handleError = (event: SpeechRecognitionErrorEvent) => {
+    if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
       this.recognition.removeEventListener('end', this.handleEnd.bind(this));
       this.listening = false;
     }
@@ -56,8 +52,8 @@ export class SpeechRecognizer extends Observable<SpeechRecognitionEventType> {
     this.recognition.start();
   };
 
-  public listen = (options: SpeechRecognitionOptions) => {
-    if (this.listening) return;
+  public listen = (options: SpeechRecognitionOptions): void => {
+    if (this.listening || !SpeechRecognition || !GrammarList) return;
 
     const { lang, interimResults, continuous, maxAlternatives, grammars } = options;
 
@@ -67,8 +63,6 @@ export class SpeechRecognizer extends Observable<SpeechRecognitionEventType> {
     this.recognition.maxAlternatives = maxAlternatives;
 
     if (grammars) {
-      const GrammarList: ISpeechGrammarList =
-        window.webkitSpeechGrammarList || window.SpeechGrammarList;
       const speechGrammarList = new GrammarList();
       speechGrammarList.addFromString(grammars, 1);
       this.recognition.grammars = speechGrammarList;
@@ -82,7 +76,7 @@ export class SpeechRecognizer extends Observable<SpeechRecognitionEventType> {
     this.listening = true;
   };
 
-  public stop = () => {
+  public stop = (): void => {
     if (!this.listening) return;
 
     this.recognition.stop();
