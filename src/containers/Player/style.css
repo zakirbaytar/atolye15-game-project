@@ -8,9 +8,57 @@
 }
 
 .player .bubble[data-placement='bottom-right'] {
-  left: -40%;
+  right: 50%;
 }
 
 .player .bubble[data-placement='bottom-left'] {
-  right: -40%;
+  left: 50%;
+}
+
+/** XS */
+@media screen and (max-width: 412px) {
+  .player .bubble {
+    font-size: 0.5rem;
+    top: min(5vw, -40%);
+  }
+
+  .player .bubble[data-placement='bottom-right'] {
+    right: 20%;
+  }
+
+  .player .bubble[data-placement='bottom-left'] {
+    left: 20%;
+  }
+}
+
+/** Mobile */
+@media screen and (min-width: 413px) and (max-width: 768px) {
+  .player .bubble {
+    font-size: 0.75rem;
+    top: min(5vw, -35%);
+  }
+}
+
+/** Tablet */
+@media screen and (min-width: 769px) {
+  .player .bubble {
+    font-size: 0.875rem;
+    top: min(5vw, -15%);
+  }
+}
+
+/** Desktop */
+@media screen and (min-width: 1024px) {
+  .player .bubble {
+    font-size: 1rem;
+    top: min(5vw, -20%);
+  }
+}
+
+/** Widescreen */
+@media screen and (min-width: 1216px) {
+}
+
+/** FullHD */
+@media screen and (min-width: 1408px) {
 }

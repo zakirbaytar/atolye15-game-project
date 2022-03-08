@@ -1,8 +1,10 @@
 import React, { FunctionComponent } from 'react';
-import SpeechBubble from '../../components/SpeechBubble';
 import useGameManager from '../../hooks/useGameManager';
-import { GameState, Turn } from '../../types/game';
+
+import SpeechBubble from '../../components/SpeechBubble';
 import capitalize from '../../utils/capitalize';
+
+import { GameState, Turn } from '../../types/game';
 
 import './style.css';
 
@@ -29,18 +31,17 @@ const Player: FunctionComponent<PlayerProps> = ({ name, imageSrc, position, turn
       <div className="player">
         {(hasAnswered || isThinking || wonLastWord) && (
           <SpeechBubble position={position}>
-            {isThinking && <img src="./thinking.svg" alt="" style={{ height: '2.6rem' }} />}
-            {hasAnswered && (
-              <h1
-                className="is-size-3 is-size-4-mobile"
-                style={{ height: '3rem', lineHeight: '3rem' }}
-              >
-                {capitalize(lastWord)}
-              </h1>
-            )}
+            <div className="speech-content">
+              {isThinking && <img src="./thinking.svg" alt="" />}
+              {hasAnswered && (
+                <h1 className="is-size-3-widescreen is-size-4-desktop is-size-4-tablet is-size-5-mobile">
+                  {capitalize(lastWord)}
+                </h1>
+              )}
+            </div>
           </SpeechBubble>
         )}
-        <img src={imageSrc} alt="" />
+        <img className="player-image" src={imageSrc} alt="" />
       </div>
       <h2 className="subtitle has-text-centered">{name}</h2>
     </section>
