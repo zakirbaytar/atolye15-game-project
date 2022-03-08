@@ -1,19 +1,26 @@
 import React, { FunctionComponent } from 'react';
+
+import useAudioPermission from '../../hooks/useAudioPermission';
 import useGameManager from '../../hooks/useGameManager';
-import { GameState, Turn } from '../../types/game';
+
+import Timer from '../../components/Timer';
+import PlayerSelectionControls from './PlayerSelectionControls';
 
 import Player from '../../containers/Player';
-import Timer from '../../components/Timer';
 import GameOverModal from './GameOverModal';
-import PlayerSelectionControls from './PlayerSelectionControls';
+import AudioPermissionModal from '../../containers/AudioPermissionModal';
+
+import { GameState, Turn } from '../../types/game';
 
 import './style.css';
 
 const Play: FunctionComponent = () => {
+  const { askForPermission } = useAudioPermission();
   const { startNewGame, gameState, timeLeft } = useGameManager();
 
   return (
     <main className="container play-container is-max-widescreen">
+      <AudioPermissionModal />
       <GameOverModal />
       <section className="section">
         <div className="columns is-mobile">
@@ -28,7 +35,11 @@ const Play: FunctionComponent = () => {
                 <button
                   type="button"
                   className="button is-small is-responsive is-primary is-align-self-center"
-                  onClick={() => startNewGame()}
+                  onClick={() => {
+                    askForPermission(() => {
+                      startNewGame();
+                    });
+                  }}
                 >
                   Yeni Oyuna Başla
                 </button>
