@@ -4,9 +4,7 @@ import './style.css';
 
 interface TimerOptions {
   defaultColor: string;
-  warningThreshold: number;
   warningColor: string;
-  alertThreshold: number;
   alertColor: string;
 }
 
@@ -19,9 +17,7 @@ interface TimerProps {
 
 const defaultOptions = {
   defaultColor: '#00d1b2',
-  warningThreshold: 4,
   warningColor: '#ffe08a',
-  alertThreshold: 2,
   alertColor: '#f14668',
 };
 
@@ -29,21 +25,24 @@ const FULL_DASH_ARRAY = 283;
 
 const Timer: FunctionComponent<TimerProps> = ({ seconds, timeLeft, options, onTimeout }) => {
   const [strokeDashArray, setStrokeDashArray] = useState('283 283');
-  const { defaultColor, alertColor, alertThreshold, warningColor, warningThreshold } = {
+  const { defaultColor, alertColor, warningColor } = {
     ...defaultOptions,
     ...options,
   };
 
   const getRemainingPathColor = useCallback(() => {
-    if (alertThreshold && timeLeft <= alertThreshold) {
+    const warningThreshold = Math.floor(seconds * 0.5);
+    const alertThreshold = Math.floor(seconds * 0.25);
+
+    if (timeLeft <= alertThreshold) {
       return alertColor;
     }
-    if (warningThreshold && timeLeft <= warningThreshold) {
+    if (timeLeft <= warningThreshold) {
       return warningColor;
     }
 
     return defaultColor;
-  }, [timeLeft, alertThreshold, alertColor, warningThreshold, warningColor, defaultColor]);
+  }, [timeLeft, alertColor, warningColor, defaultColor]);
 
   const calculateTimeFraction = useCallback(() => {
     const rawTimeFraction = timeLeft / seconds;
