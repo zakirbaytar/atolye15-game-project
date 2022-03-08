@@ -9,6 +9,10 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .play-container {
+    padding-top: 6rem;
+  }
+
   .play-container > .section {
     padding: 5rem 1.5rem;
   }

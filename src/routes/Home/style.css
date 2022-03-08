@@ -1,11 +1,11 @@
 .home .hero {
-  --hero-bg-color: #eff5fb;
+  --hero-bg-color: #ebfffc;
   --hero-text-color: #2d3748;
 
   background-color: var(--hero-bg-color);
 }
 
-.hero::before {
+.hero > .container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -14,8 +14,15 @@
   height: 100%;
 
   background-image: url('/public/ai.svg');
-  background-size: 15rem 10rem;
+  background-size: 20rem 15rem;
   background-repeat: no-repeat;
   background-position: left center;
   transform: rotateY(180deg);
+}
+
+@media screen and (max-width: 768px) {
+  .hero > .container::before {
+    right: 0 !important;
+    background-size: 15rem 10rem;
+  }
 }

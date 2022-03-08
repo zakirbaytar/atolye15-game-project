@@ -31,10 +31,10 @@ const Play: FunctionComponent = () => {
             {gameState === GameState.Started ? (
               <Timer seconds={turnTime} timeLeft={timeLeft} />
             ) : (
-              <div className="buttons are-small">
+              <div className="buttons">
                 <button
                   type="button"
-                  className="button is-small is-responsive is-primary is-align-self-center"
+                  className="button is-responsive is-primary is-align-self-center"
                   onClick={() => {
                     askForPermission(() => {
                       startNewGame();

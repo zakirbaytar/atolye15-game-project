@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from 'react';
+import './style.css';
 
 const HowToPlay: FunctionComponent = () => {
   return (
-    <main className="container">
+    <main className="how-to-play container is-max-widescreen">
       <div className="content p-4 mt-4">
         <h1 className="title">Nasıl Oynanır?</h1>
         <p>Türetmeç, bilgisayara karşı oynanan kelime türetme oyunudur. </p>

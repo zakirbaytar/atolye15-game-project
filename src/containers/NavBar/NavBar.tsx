@@ -39,7 +39,7 @@ const NavBar: FunctionComponent = () => {
             <div className="navbar-end">
               <div className="navbar-item">
                 <div className="buttons is-justify-content-center">
-                  <NavItem className="button is-primary is-small" path="/play" onClick={closeMenu}>
+                  <NavItem className="button is-primary" path="/play" onClick={closeMenu}>
                     <strong>Hemen Oynamaya Başla</strong>
                   </NavItem>
                 </div>

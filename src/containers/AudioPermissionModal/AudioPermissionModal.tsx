@@ -41,7 +41,7 @@ const AudioPermissionModal: FunctionComponent = () => {
           <div className="message-footer is-clearfix">
             <button
               type="button"
-              className="button is-small is-pulled-right"
+              className="button is-pulled-right"
               onClick={() => setIsOpen(false)}
             >
               Kapat

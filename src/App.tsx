@@ -10,7 +10,7 @@ import './styles/index.css';
 const App: FunctionComponent = () => {
   return (
     <PermissionProvider>
-      <header className="container">
+      <header className="container is-clearfix">
         <NavBar />
       </header>
       <Routes />

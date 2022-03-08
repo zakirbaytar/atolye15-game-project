@@ -8,7 +8,7 @@ const PlayerSelectionControls: FunctionComponent = () => {
   const { startingPlayer, setStartingPlayer } = useGameManager();
 
   return (
-    <div className="buttons are-small">
+    <div className="buttons">
       <ToggleGroup
         defaultValue={startingPlayer}
         selections={[
