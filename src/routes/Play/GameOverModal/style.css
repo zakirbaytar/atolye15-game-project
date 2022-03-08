@@ -1,0 +1,30 @@
+.game-over-modal.game-won {
+  --modal-header-background: #00d1b2;
+}
+
+.game-over-modal.game-lost {
+  --modal-header-background: #4a4a4a;
+}
+
+.game-over-modal .message-header {
+  padding: 0.75em 1.5em 1.5em;
+  background: radial-gradient(
+    45rem 14rem at top center,
+    var(--modal-header-background, #f5f5f5) 39%,
+    #f5f5f5 40%
+  );
+}
+
+.game-over-modal .message-body {
+  padding: 0.5em 1.5em 1.25em;
+}
+
+.game-over-modal .message-footer {
+  padding: 0.5em 1.25em;
+}
+
+.game-over-modal .delete {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
