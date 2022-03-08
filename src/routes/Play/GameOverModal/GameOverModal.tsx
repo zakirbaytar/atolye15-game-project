@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import cs from 'classnames';
 import useGameManager from '../../../hooks/useGameManager';
 
@@ -47,11 +47,16 @@ const GameOverModal: FunctionComponent = () => {
           <div className="message-header is-flex-direction-column">
             <h1 className="is-size-4 has-text-centered has-text-weight-bold mb-2">{title}</h1>
             <h2 className="is-size-7 has-text-centered has-text-weight-semibold">{subtitle}</h2>
-            <button className="delete" onClick={() => setIsOpen(false)} />
+            <button
+              type="button"
+              className="delete"
+              aria-label="Close modal"
+              onClick={() => setIsOpen(false)}
+            />
           </div>
           <div className="message-body">
             {wordHistory.length ? (
-              <Fragment>
+              <>
                 <h1 className="is-size-6 is-underlined mb-2 has-text-centered">
                   Söylenen kelimeler
                 </h1>
@@ -62,7 +67,7 @@ const GameOverModal: FunctionComponent = () => {
                     </li>
                   ))}
                 </ul>
-              </Fragment>
+              </>
             ) : (
               <p className="is-size-7 has-text-centered mt-4">
                 Maalesef sözlükteki kelimelerden herhangi biri söylenmeden oyun bitti
@@ -71,6 +76,7 @@ const GameOverModal: FunctionComponent = () => {
           </div>
           <div className="message-footer is-clearfix">
             <button
+              type="button"
               className="button is-small is-outlined is-pulled-right"
               onClick={() => setIsOpen(false)}
             >
