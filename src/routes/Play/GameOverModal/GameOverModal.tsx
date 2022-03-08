@@ -57,13 +57,13 @@ const GameOverModal: FunctionComponent = () => {
           <div className="message-body">
             {wordHistory.length ? (
               <>
-                <h1 className="is-size-6 is-underlined mb-2 has-text-centered">
+                <h1 className="is-size-5 is-underlined mb-2 has-text-centered">
                   Söylenen kelimeler
                 </h1>
                 <ul>
                   {wordHistory.map((word: string) => (
                     <li key={word}>
-                      <p className="is-size-7 has-text-centered">{capitalize(word)}</p>
+                      <p className="is-size-6 has-text-centered">{capitalize(word)}</p>
                     </li>
                   ))}
                 </ul>
