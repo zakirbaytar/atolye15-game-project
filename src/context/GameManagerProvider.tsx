@@ -70,32 +70,27 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
   const speechSynthesis = useSpeechSynthesis({ language });
 
   useEffect(() => {
-    if (gameState !== GameState.Started) return;
+    if (gameState !== GameState.Started) return undefined;
 
     restartTimer();
     if (turn === Turn.Player) {
       speechRecognition.listen({ lang: language });
-      return () => {
-        speechRecognition.stopListening();
-      };
-    } else {
-      const thinkingTime = (Math.floor(Math.random() * aiOptions.timeToAnswer) + 1) * 1000;
-      const shouldLose = Math.random() <= aiOptions.lossPercentage / 100;
-
-      if (shouldLose) return;
-
-      const timer = setTimeout(() => {
-        if (gameState === GameState.Started) {
-          const randomWord = getRandomWord({ words, lastWord });
-          speechSynthesis.speak(randomWord);
-          addWord(randomWord);
-        }
-      }, thinkingTime);
-
-      return () => {
-        clearTimeout(timer);
-      };
+      return () => speechRecognition.stopListening();
     }
+
+    const thinkingTime = (Math.floor(Math.random() * aiOptions.timeToAnswer) + 1) * 1000;
+    const shouldLose = Math.random() <= aiOptions.lossPercentage / 100;
+    if (shouldLose) return undefined;
+
+    const thinkTimer = setTimeout(() => {
+      if (gameState === GameState.Started) {
+        const randomWord = getRandomWord({ words, lastWord });
+        speechSynthesis.speak(randomWord);
+        addWord(randomWord);
+      }
+    }, thinkingTime);
+
+    return () => clearTimeout(thinkTimer);
   }, [gameState, turn]);
 
   useEffect(() => {
