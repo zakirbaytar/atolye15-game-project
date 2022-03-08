@@ -1,7 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react';
 
-import './style.css';
-
 interface NavbarBurgerProps {
   isActive: boolean;
   onClick: () => void;
