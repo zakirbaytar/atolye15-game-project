@@ -5,7 +5,14 @@ interface UseSpeechSynthesisOptions {
   onEnd?: Callback;
 }
 
-const useSpeechSynthesis = (options: UseSpeechSynthesisOptions) => {
+interface SpeechSynthesisContext {
+  supported: boolean;
+  speak: (text: string) => void;
+  speaking: boolean;
+  cancel: () => void;
+}
+
+const useSpeechSynthesis = (options: UseSpeechSynthesisOptions): SpeechSynthesisContext => {
   const { language, onEnd } = options;
   const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [speaking, setSpeaking] = useState(false);
@@ -15,8 +22,8 @@ const useSpeechSynthesis = (options: UseSpeechSynthesisOptions) => {
     (voices: SpeechSynthesisVoice[]) => {
       if (!voices.length) return;
 
-      const voice = voices.find((voice) => voice.lang === language);
-      if (voice) setVoice(voice);
+      const foundVoice = voices.find((existingVoice) => existingVoice.lang === language);
+      if (foundVoice) setVoice(foundVoice);
     },
     [language, setVoice],
   );
@@ -33,12 +40,12 @@ const useSpeechSynthesis = (options: UseSpeechSynthesisOptions) => {
       const voices = window.speechSynthesis.getVoices();
       setDefaultVoiceFrom(voices);
 
-      window.speechSynthesis.onvoiceschanged = (event: any) => {
-        const voices = event.target.getVoices();
-        setDefaultVoiceFrom(voices);
+      window.speechSynthesis.onvoiceschanged = (event: Event) => {
+        const fetchedVoices = (event.target as SpeechSynthesis).getVoices();
+        setDefaultVoiceFrom(fetchedVoices);
       };
     }
-  }, []);
+  }, [setDefaultVoiceFrom]);
 
   const speak = (text: string) => {
     if (!supported) return;

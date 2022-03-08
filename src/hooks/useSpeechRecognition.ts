@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { SpeechRecognitionOptions, SpeechRecognizer } from '../utils/SpeechRecognizer';
-import { useEventCallback } from './useEventCallback';
+import useEventCallback from './useEventCallback';
 
 interface UseSpeechRecognitionOptions {
   onResult: (transcript: string) => void;
-  onError: (error: any) => void;
+  onError?: (error: Error) => void;
 }
 
 const defaultOptions = {
@@ -19,22 +19,29 @@ const defaultListenOptions = {
   continuous: false,
 };
 
-const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOptions) => {
+interface SpeechRecognitionContext {
+  listen: (options?: Partial<SpeechRecognitionOptions>) => void;
+  stopListening: () => void;
+  supported: boolean;
+  listening: boolean;
+}
+
+const useSpeechRecognition = (options: UseSpeechRecognitionOptions): SpeechRecognitionContext => {
   const recognition = useRef<SpeechRecognizer | null>(null);
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(false);
 
-  const { onResult, onError } = options;
+  const { onResult, onError } = { ...defaultOptions, ...options };
 
   const listen = useEventCallback(
-    (options: SpeechRecognitionOptions) => {
+    (listenOptions: SpeechRecognitionOptions) => {
       if (listening || !supported) return;
 
-      const mergedOptions = { ...defaultListenOptions, ...options };
+      const mergedOptions = { ...defaultListenOptions, ...listenOptions };
 
       recognition.current?.listen(mergedOptions);
-      recognition.current?.subscribe('result', onResult!);
-      recognition.current?.subscribe('error', onError!);
+      recognition.current?.subscribe('result', onResult);
+      recognition.current?.subscribe('error', onError);
       setListening(true);
     },
     [recognition, listening, supported],
@@ -49,19 +56,17 @@ const useSpeechRecognition = (options: UseSpeechRecognitionOptions = defaultOpti
 
   useEffect(() => {
     try {
-      if (SpeechRecognizer.isSupported()) {
-        setSupported(true);
-        recognition.current = new SpeechRecognizer();
-      }
-    } catch (error: any) {
-      onError?.(error);
+      recognition.current = new SpeechRecognizer();
+      setSupported(true);
+    } catch (error) {
+      if (error instanceof Error) onError?.(error);
     }
 
     return () => {
       recognition.current?.unsubscribeAll();
       recognition.current = null;
     };
-  }, []);
+  }, [onError]);
 
   return {
     listening,
