@@ -1,0 +1,12 @@
+.modal-content {
+  border-radius: 0.5rem;
+  width: 20rem !important;
+}
+
+@media screen and (min-width: 769px) {
+  .modal-content {
+    margin: 0 auto;
+    max-height: calc(100vh - 40px);
+    width: 20rem !important;
+  }
+}
