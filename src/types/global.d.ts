@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }] */
 type Callback = (...args: any[]) => void;
 
 type GlobalWindow = Window &

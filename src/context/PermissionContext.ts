@@ -11,7 +11,7 @@ export type PermissionContextState = {
   askForPermission: (onGranted?: Callback) => void;
 };
 
-export const PermissionContext = createContext({
+export const PermissionContext = createContext<PermissionContextState>({
   permission: AudioPermission.Unknown,
-  askForPermission: (onGranted?: Callback) => {},
+  askForPermission: () => {},
 });

@@ -28,12 +28,11 @@ const getRandomPlayer = (): Turn => {
 const gameReducer = (state: GameReducerState = initialState, action: Action): GameReducerState => {
   switch (action.type) {
     case ActionTypes.StartNewGame:
-      const startingPlayer = state.startingPlayer ?? getRandomPlayer();
       return {
         ...initialState,
         startingPlayer: state.startingPlayer,
         gameState: GameState.Started,
-        turn: startingPlayer,
+        turn: state.startingPlayer ?? getRandomPlayer(),
       };
     case ActionTypes.SetTurn:
       return { ...state, turn: action.payload.turn };

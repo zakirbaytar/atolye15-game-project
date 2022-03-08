@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import cs from 'classnames';
 
@@ -12,24 +12,29 @@ export interface ModalProps {
 }
 
 const Modal: FunctionComponent<ModalProps> = ({ className, style, isOpen, toggle, children }) => {
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent | React.KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
         toggle();
       }
-    }
+    },
+    [isOpen, toggle],
+  );
 
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]);
 
   if (!isOpen) return null;
 
   return createPortal(
     <div className={cs('modal', { 'is-active': isOpen }, className)} style={style} role="dialog">
-      <div className="modal-background" onClick={toggle} />
+      {/* Modal background is used for closing modal when clicked  */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div className="modal-background" onClick={toggle} onKeyDown={handleKeyDown} />
       {children}
     </div>,
     document.body,

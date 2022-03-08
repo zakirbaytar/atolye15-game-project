@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { PermissionContext } from '../context/PermissionContext';
+import { useContext } from 'react';
+import { PermissionContext, PermissionContextState } from '../context/PermissionContext';
 
-const useAudioPermission = () => {
+const useAudioPermission = (): PermissionContextState => {
   return useContext(PermissionContext);
 };
 

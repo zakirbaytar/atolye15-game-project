@@ -14,7 +14,7 @@ const PermissionProvider: FunctionComponent = ({ children }) => {
         setPermission(AudioPermission.Granted);
         onGranted?.();
       })
-      .catch((error) => {
+      .catch(() => {
         setPermission(AudioPermission.Denied);
       });
   }, []);

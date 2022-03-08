@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useCoundownTimer = (seconds: number) => {
+interface CountdownTimerContext {
+  timeLeft: number;
+  startTimer: () => void;
+  stopTimer: () => void;
+  resetTimer: () => void;
+  restartTimer: () => void;
+}
+
+const useCoundownTimer = (seconds: number): CountdownTimerContext => {
   const timer = useRef<NodeJS.Timeout | null>(null);
   const [timeLeft, setTimeLeft] = useState(seconds);
 
