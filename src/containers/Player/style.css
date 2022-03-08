@@ -1,0 +1,16 @@
+.player {
+  position: relative;
+}
+
+.player .bubble {
+  position: absolute;
+  top: -25%;
+}
+
+.player .bubble[data-placement='bottom-right'] {
+  left: -40%;
+}
+
+.player .bubble[data-placement='bottom-left'] {
+  right: -40%;
+}
