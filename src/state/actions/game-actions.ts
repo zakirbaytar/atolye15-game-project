@@ -1,5 +1,5 @@
 import { Turn } from '../../types/game';
-import { ActionTypes } from '../action-types';
+import ActionTypes from '../action-types';
 
 interface AddWordAction {
   type: ActionTypes.AddWord;
@@ -17,6 +17,9 @@ interface SetTurnAction {
 
 interface StartNewGameAction {
   type: ActionTypes.StartNewGame;
+  payload?: {
+    startingPlayer?: Turn;
+  };
 }
 
 interface SetWinnerAction {
@@ -26,4 +29,6 @@ interface SetWinnerAction {
   };
 }
 
-export type GameActions = AddWordAction | SetTurnAction | StartNewGameAction | SetWinnerAction;
+type GameActions = AddWordAction | SetTurnAction | StartNewGameAction | SetWinnerAction;
+
+export default GameActions;

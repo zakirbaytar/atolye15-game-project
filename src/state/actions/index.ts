@@ -1,3 +1,5 @@
-import { GameActions } from './game-actions';
+import GameActions from './game-actions';
 
-export type Action = GameActions;
+type Action = GameActions;
+
+export default Action;
