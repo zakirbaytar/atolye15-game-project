@@ -13,7 +13,7 @@ import isValidWord from '../utils/isValidWord';
 import getRandomWord from '../utils/getRandomWord';
 
 interface GameManagerProviderProps {
-  timer: number;
+  turnTime: number;
   words: string[];
   language: string;
   aiOptions: {
@@ -32,7 +32,7 @@ const initialState = {
 };
 
 const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
-  timer,
+  turnTime,
   words,
   language,
   aiOptions,
@@ -41,7 +41,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
   const [state, dispatch] = useReducer(gameReducer, initialState);
   const { startingPlayer, gameState, lastWord, turn, wordHistory, winner } = state;
 
-  const { timeLeft, resetTimer, restartTimer } = useCoundownTimer(timer);
+  const { timeLeft, resetTimer, restartTimer } = useCoundownTimer(turnTime);
 
   useEffect(() => {
     if (gameState === GameState.Started) {
@@ -79,7 +79,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
     }
 
     const thinkingTime = (Math.floor(Math.random() * aiOptions.timeToAnswer) + 1) * 1000;
-    const shouldLose = Math.random() <= aiOptions.lossPercentage / 100;
+    const shouldLose = !!words.length && Math.random() <= aiOptions.lossPercentage / 100;
     if (shouldLose) return undefined;
 
     const thinkTimer = setTimeout(() => {
@@ -110,6 +110,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
   return (
     <GameManagerContext.Provider
       value={{
+        turnTime,
         startingPlayer,
         gameState,
         lastWord,
