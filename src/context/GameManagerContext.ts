@@ -6,9 +6,11 @@ export type GameManagerContextState = GameReducerState & {
   timeLeft: number;
   setWinner: (turn: Turn) => void;
   startNewGame: (turn?: Turn) => void;
+  setStartingPlayer: (turn: Turn | null) => void;
 };
 
 export const GameManagerContext = createContext<GameManagerContextState>({
+  startingPlayer: null,
   gameState: GameState.NotStarted,
   lastWord: null,
   wordHistory: [],
@@ -17,4 +19,5 @@ export const GameManagerContext = createContext<GameManagerContextState>({
   timeLeft: 8,
   setWinner: () => {},
   startNewGame: () => {},
+  setStartingPlayer: () => {},
 });

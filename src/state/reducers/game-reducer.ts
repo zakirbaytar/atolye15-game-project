@@ -4,6 +4,7 @@ import Action from '../actions';
 import { GameState, Turn } from '../../types/game';
 
 export interface GameReducerState {
+  startingPlayer: Turn | null;
   gameState: GameState;
   lastWord: string | null;
   wordHistory: string[];
@@ -12,6 +13,7 @@ export interface GameReducerState {
 }
 
 const initialState = {
+  startingPlayer: null,
   gameState: GameState.NotStarted,
   lastWord: null,
   wordHistory: [],
@@ -19,11 +21,20 @@ const initialState = {
   winner: null,
 };
 
+const getRandomPlayer = (): Turn => {
+  return Math.random() < 0.5 ? Turn.Player : Turn.Computer;
+};
+
 const gameReducer = (state: GameReducerState = initialState, action: Action): GameReducerState => {
   switch (action.type) {
     case ActionTypes.StartNewGame:
-      const turn = action.payload?.startingPlayer;
-      return { ...initialState, gameState: GameState.Started, turn: turn ?? Turn.Player };
+      const startingPlayer = state.startingPlayer ?? getRandomPlayer();
+      return {
+        ...initialState,
+        startingPlayer: state.startingPlayer,
+        gameState: GameState.Started,
+        turn: startingPlayer,
+      };
     case ActionTypes.SetTurn:
       return { ...state, turn: action.payload.turn };
     case ActionTypes.AddWord:
@@ -39,6 +50,8 @@ const gameReducer = (state: GameReducerState = initialState, action: Action): Ga
         gameState: GameState.Finished,
         winner: action.payload.turn,
       };
+    case ActionTypes.SetStartingPlayer:
+      return { ...state, startingPlayer: action.payload.turn };
     default:
       return state;
   }

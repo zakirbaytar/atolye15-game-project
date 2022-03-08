@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useReducer } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useReducer } from 'react';
 
 import { GameManagerContext } from './GameManagerContext';
 import gameReducer from '../state/reducers';
@@ -23,6 +23,7 @@ interface GameManagerProviderProps {
 }
 
 const initialState = {
+  startingPlayer: null,
   gameState: GameState.NotStarted,
   lastWord: null,
   wordHistory: [],
@@ -38,7 +39,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
-  const { gameState, lastWord, turn, wordHistory, winner } = state;
+  const { startingPlayer, gameState, lastWord, turn, wordHistory, winner } = state;
 
   const { timeLeft, resetTimer, restartTimer } = useCoundownTimer(timer);
 
@@ -48,7 +49,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
     }
   }, [gameState]);
 
-  const { addWord, setWinner, startNewGame } = useMemo(
+  const { addWord, setWinner, startNewGame, setStartingPlayer } = useMemo(
     () => bindActionCreators(dispatch),
     [dispatch],
   );
@@ -114,6 +115,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
   return (
     <GameManagerContext.Provider
       value={{
+        startingPlayer,
         gameState,
         lastWord,
         timeLeft,
@@ -122,6 +124,7 @@ const GameManagerProvider: FunctionComponent<GameManagerProviderProps> = ({
         winner,
         setWinner,
         startNewGame,
+        setStartingPlayer,
       }}
     >
       {children}

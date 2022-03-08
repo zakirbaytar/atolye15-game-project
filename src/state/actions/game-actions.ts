@@ -29,6 +29,18 @@ interface SetWinnerAction {
   };
 }
 
-type GameActions = AddWordAction | SetTurnAction | StartNewGameAction | SetWinnerAction;
+interface SetStartingPlayerAction {
+  type: ActionTypes.SetStartingPlayer;
+  payload: {
+    turn: Turn | null;
+  };
+}
+
+type GameActions =
+  | AddWordAction
+  | SetTurnAction
+  | StartNewGameAction
+  | SetWinnerAction
+  | SetStartingPlayerAction;
 
 export default GameActions;
